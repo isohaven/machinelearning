@@ -1,0 +1,8 @@
+Movie,Year,Rating,Time,Genre,Box_Office
+Avatar,2009,PG-13,162,Action,2781505847
+Titanic,1997,PG-13,194,Drama,1835300000
+Harry Potter and the Deathly Hallows: Part 2,2011,PG-13,130,Fantasy,1327655619
+Transformers: Dark of the Moon,2011,PG-13,154,Action,1123146996
+The Lord of the Rings: The Return of the King,2003,PG-13,201,Action,1119929521
+Pirates of the Caribbean: Dead Man's Chest,2006,PG-13,151,Action,1065896541
+Toy Story 3, 2010,G,103,Animation,1062984497

@@ -1,49 +1,20 @@
 import pandas as pd
 import numpy as np
 import tensorflow as tf
+from sklearn.model_selection import train_test_split
 
-print('parsing data')
-
-train_df = pd.read_csv('aps_failure_training_set.csv')
-test_df = pd.read_csv('aps_failure_test_set.csv')
-
-train_df.replace(to_replace='na', value=-99999, inplace=True)
-test_df.replace(to_replace='na', value=-99999, inplace=True)
-
-train_df.replace('neg', 0, inplace=True)
-train_df.replace('pos', 1, inplace=True)
-test_df.replace('neg', 0, inplace=True)
-test_df.replace('pos', 1, inplace=True)
-
-X_train = np.array(train_df.drop('class', axis=1))
-y_train = np.array(train_df['class'])
-X_test = np.array(test_df.drop('class', axis=1))
-y_test = np.array(test_df['class'])
+# data parsing
 
 
+def make_one_hot(x): 
+  n_values = np.max(x) + 1
+  x = np.eye(n_values)[x].astype('float32')
+  return x
+data_y = make_one_hot(np.array(df['class']))
+data_X = np.array(df.drop('class', axis=1))
 
-def make_one_hot(x):
-	# thank you arduano
-	n_values = np.max(x) + 1
-	x = np.eye(n_values)[x].astype('float32')
-	return x
-y_train = make_one_hot(y_train)
-y_test = make_one_hot(y_test)
-print('parsing done')
-
-
-def saveModel (sess):
-    saver = tf.train.Saver()
-    saver.save(sess, 'C:/Users/ridge/Desktop/machinelearning/aps/model/model.ckpt')
-
-def restoreModel (sess):
-    saver = tf.train.Saver()
-    saver.restore(sess, 'C:/Users/ridge/Desktop/machinelearning/aps/model/model.ckpt')
-    merged = tf.summary.merge_all()
-    writer = tf.summary.FileWriter('scrap15', sess.graph)
-
-
-
+# sep training and testing data
+X_train, X_test, y_train, y_test = train_test_split(data_X, data_y, test_size=0.2)
 
 class dnn:
     def __init__(
@@ -67,7 +38,7 @@ class dnn:
         self.x = tf.placeholder(dtype=tf.float32, shape=[None, self.n_features])
         self.y = tf.placeholder(dtype=tf.float32, shape=[None, self.n_classes])
 
-    # returns rensorflow variable of desired shape
+    # returns tensorflow variable of desired shape
     def get_variable(self, shape):
         return tf.Variable(tf.random_normal(shape))
 
@@ -89,7 +60,6 @@ class dnn:
         layer = tf.add(tf.matmul(prev_layer, weights), biases)
         return layer
 
-
     def train(self, featureset):
         model = self.model(featureset)
         cost_function = tf.reduce_mean(
@@ -97,38 +67,28 @@ class dnn:
         optimizer = tf.train.AdamOptimizer(self.learning_rate).minimize(cost_function)
 
 
+        init = tf.global_variables_initializer()
 
         with tf.Session() as sess:
-            # saver = tf.train.Saver()
-
-            sess.run(tf.global_variables_initializer()) # comment this line if restoring model
-            # restoreModel(sess)
-
+            sess.run(init)
 
             for i in range(1, self.n_epochs+1):
                 avg_cost = 0
+
+
                 sess.run(optimizer, feed_dict = {self.x: X_train, self.y: y_train})
+
                 avg_cost += sess.run(cost_function, feed_dict={self.x: X_train, self.y: y_train})
 
-                print('epoch', i, 'of' , self.n_epochs, 'complete')
+            print('epoch', i, 'complete')
             predictions = tf.equal(tf.argmax(model, 1), tf.argmax(self.y, 1))
             accuracy = tf.reduce_mean(tf.cast(predictions, 'float'))
-            if i % 20 == 0:
-                saveModel(sess)
-
-
-            # pred = sess.run(model, feed_dict={self.x: np.expand_dims(data, 0)})
-
             print('accuracy:', accuracy.eval({self.x : X_test, self.y: y_test}))
-            # saver.save(sess, 'C:/Users/ridge/Desktop/machinelearning/aps/model/model.ckpt')
-            
+        print(':)')
 
-   
 
-        
-
-d = dnn(170, 2, n_epochs=50)
+d = dnn(6, 4)
 x = d.x
-print('training')
 d.train(x)
-print('done')
+
+

@@ -47,7 +47,7 @@ class dnn:
         self.x = tf.placeholder(dtype=tf.float32, shape=[None, self.n_features])
         self.y = tf.placeholder(dtype=tf.float32, shape=[None, self.n_classes])
 
-    # returns rensorflow variable of desired shape
+    # returns tensorflow variable of desired shape
     def get_variable(self, shape):
         return tf.Variable(tf.random_normal(shape))
 
