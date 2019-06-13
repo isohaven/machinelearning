@@ -1,0 +1,3 @@
+Facebook User?,Younger,Middle,Older
+Yes,78,49,21
+N0,4,21,46
