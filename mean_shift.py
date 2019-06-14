@@ -14,6 +14,8 @@ def neighbors(point, X, distance):
         if( np.linalg.norm(point-x) <= distance):
             friends.append(x)
     return friends
+def kernel(distance):
+    pass
 xs = np.arange(1, 51) # xs [1-50]
 ys = 50 * np.random.random((1, 50))[0] # ys randoms [0-1]
 X = np.column_stack((xs, ys)) # X is featureset [xs, ys]
