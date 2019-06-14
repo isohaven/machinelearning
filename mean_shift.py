@@ -3,9 +3,23 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 style.use('ggplot')
 
+fig, ax  = plt.subplots()
+
+def draw_circle(x=0, y=0, r=1):
+    circle = plt.Circle( (x, y), r)
+    ax.add_artist(circle)
+def neighbors(point, X, distance):
+    friends = [] 
+    for x in X:
+        if( np.linalg.norm(point-x) <= distance):
+            friends.append(x)
+    return friends
 xs = np.arange(1, 51) # xs [1-50]
-ys = np.random.random((1, 50))[0] # ys randoms [0-1]
+ys = 50 * np.random.random((1, 50))[0] # ys randoms [0-1]
 X = np.column_stack((xs, ys)) # X is featureset [xs, ys]
 # print(X)
+
 plt.scatter(X[:,0], X[:, 1], s=100)
+plt.scatter(15, 15, c='r')
+print(neighbors( [15, 15], X, 5))
 plt.show()
