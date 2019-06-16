@@ -16,13 +16,7 @@ def neighbors(point, X, distance):
             friends.append(x)
     return friends
 def kernel(distance, bandwidth):
-    return np.exp( -1*np.square(distance) / ( 2* (bandwidth**2) ) ) 
+    return (1 / (bandwidth * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((distance / bandwidth)) ** 2)
 
 
-xs = np.arange(1, 51) # xs [1-50]
-ys = 50 * np.random.random((1, 50))[0] # ys randoms [0-1]
-X = np.column_stack((xs, ys)) # X is featureset [xs, ys]
-# print(X)
-plt.scatter(X[:,0], X[:, 1], s=100)
-plt.show()
 
