@@ -19,4 +19,12 @@ def kernel(distance, bandwidth):
     return (1 / (bandwidth * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((distance / bandwidth)) ** 2)
 
 
+xs = np.arange(1, 51) # xs [1-50]
+ys = 50 * np.random.random((1, 50))[0] # ys randoms [0-1]
+X = np.column_stack((xs, ys)) # X is featureset [xs, ys]
+
+def mean_shift(X, bandwidth):
+    shift_points = X
+    shifting = [True] * X.shape[0]
+
 
