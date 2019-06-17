@@ -23,8 +23,15 @@ xs = np.arange(1, 51) # xs [1-50]
 ys = 50 * np.random.random((1, 50))[0] # ys randoms [0-1]
 X = np.column_stack((xs, ys)) # X is featureset [xs, ys]
 
-def mean_shift(X, bandwidth):
-    shift_points = X
-    shifting = [True] * X.shape[0]
+
+class Mean_Shift:
+    def __init__(self, bandwidth=4):
+        self.bandwidth = bandwidth
+    def fit(self, data):
+        centroids = {}
+        # make all data points centroids
+        for i in range(len(data)):
+            centroids[i] = data[i]
+
 
 
